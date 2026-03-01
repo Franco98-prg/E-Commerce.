@@ -1,0 +1,22 @@
+<div class="row">
+    <div class="col-12 text-center mb-4">
+        <h1 class="display-5 fw-bold">Nuestro Catálogo</h1>
+        <p class="lead text-muted">Explora todos nuestros Productos Hidroponicos.</p>
+    </div>
+
+    {{#each products}}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm border-0">
+            <div class="card-body">
+                <h5 class="card-title text-primary">{{this.title}}</h5>
+                <h6 class="card-subtitle mb-2 text-muted">Código: {{this.code}}</h6>
+                <p class="card-text">{{this.description}}</p>
+                <h4 class="text-success">${{this.price}}</h4>
+            </div>
+            <div class="card-footer bg-transparent border-top-0">
+                <span class="badge bg-secondary">Stock: {{this.stock}}</span>
+            </div>
+        </div>
+    </div>
+    {{/each}}
+</div>

@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-12 text-center mb-4">
+        <h2>Panel de Gestión en Tiempo Real</h2>
+    </div>
+
+    <div class="col-md-4">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">Agregar Producto</h5>
+            </div>
+            <div class="card-body">
+                <form id="productForm">
+                    <div class="mb-2"><input type="text" id="title" class="form-control" placeholder="Título" required></div>
+                    <div class="mb-2"><input type="text" id="description" class="form-control" placeholder="Descripción" required></div>
+                    <div class="mb-2"><input type="number" id="price" class="form-control" placeholder="Precio" required></div>
+                    <div class="mb-2"><input type="text" id="code" class="form-control" placeholder="Código" required></div>
+                    <div class="mb-2"><input type="number" id="stock" class="form-control" placeholder="Stock" required></div>
+                    <div class="mb-3"><input type="text" id="category" class="form-control" placeholder="Categoría" required></div>
+                    <button type="submit" class="btn btn-primary w-100">Agregar Producto</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="card-title mb-0">Eliminar Producto</h5>
+            </div>
+            <div class="card-body">
+                <form id="deleteForm">
+                    <div class="mb-3">
+                        <input type="number" id="deleteId" class="form-control" placeholder="ID del producto" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger w-100">Eliminar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="card-title mb-0">Inventario Actualizado</h5>
+            </div>
+            <div class="card-body p-0">
+                <ul id="productList" class="list-group list-group-flush">
+                    </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realtime.js"></script>
