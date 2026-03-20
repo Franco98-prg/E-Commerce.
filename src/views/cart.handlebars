@@ -1,0 +1,44 @@
+<div class="container mt-5">
+    <h1 class="mb-4">Tu Carrito de Compras</h1>
+    
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-0">
+            {{#if cart.products.length}}
+                <ul class="list-group list-group-flush">
+                    {{#each cart.products}}
+                    <li class="list-group-item d-flex justify-content-between align-items-center p-4">
+                        <div>
+                            <h5 class="mb-0 text-primary">{{this.product.title}}</h5>
+                            <small class="text-muted">Precio unitario: ${{this.product.price}}</small>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <span class="badge bg-success rounded-pill fs-6 me-4">Cantidad: {{this.quantity}}</span>
+                            <button class="btn btn-sm btn-outline-danger" onclick="removeFromCart('{{this.product._id}}')">
+                                 Eliminar
+                            </button>
+                        </div>
+                    </li>
+                    {{/each}}
+                </ul>
+            {{else}}
+                <div class="p-5 text-center">
+                    <h3 class="text-muted mb-3">Tu pedido está vacío ☕</h3>
+                    <p>¡Explora nuestro menú de especialidad y agrega algo delicioso!</p>
+                    <a href="/products" class="btn btn-primary mt-2">Ver Catálogo</a>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+
+    {{#if cart.products.length}}
+    <div class="d-flex justify-content-between">
+        <a href="/products" class="btn btn-outline-secondary">Seguir Comprando</a>
+        <div>
+            <button class="btn btn-danger me-2" onclick="clearCart()">Vaciar Carrito</button>
+            <button class="btn btn-success">Finalizar Compra</button>
+        </div>
+    </div>
+    {{/if}}
+</div>
+
+<script src="/js/cart.js"></script>

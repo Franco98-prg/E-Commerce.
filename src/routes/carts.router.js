@@ -1,52 +1,110 @@
 const { Router } = require('express');
-const CartManager = require('../managers/CartManager');
+const CartModel = require('../models/cart.model'); // Aseguramos que use Mongoose, no FileSystem
 
 const router = Router();
-// creamos el manager
-const manager = new CartManager('./carts.json');
 
-// 1. Crear un nuevo carrito
+// 1. Crear un nuevo carrito (Vacío)
 router.post('/', async (req, res) => {
     try {
-        const newCart = await manager.createCart();
-        res.status(201).send({ message: "Carrito creado", cart: newCart });
+        const newCart = await CartModel.create({ products: [] });
+        // NOTA: Aquí enviamos 'payload' y 'status', que es lo que espera tu frontend
+        res.status(201).send({ status: 'success', payload: newCart });
     } catch (error) {
-        res.status(500).send({ error: "Error al crear carrito" });
+        res.status(500).send({ status: 'error', error: "Error al crear carrito" });
     }
 });
 
-// 2. Listar productos de un carrito específico
+// 2. Obtener un carrito por ID (con populate automático)
 router.get('/:cid', async (req, res) => {
     try {
-        const cid = parseInt(req.params.cid);
-        const cart = await manager.getCartById(cid);
-
-        if (!cart) {
-            return res.status(404).send({ error: "Carrito no encontrado" });
-        }
-
-        // Solo enviamos los productos del carrito
-        res.send(cart.products);
+        const cart = await CartModel.findById(req.params.cid);
+        if (!cart) return res.status(404).send({ status: 'error', error: "Carrito no encontrado" });
+        
+        res.send({ status: 'success', payload: cart });
     } catch (error) {
-        res.status(500).send({ error: "Error al obtener carrito" });
+        res.status(500).send({ status: 'error', error: "Error al obtener carrito" });
     }
 });
 
-// 3. Agregar un producto a un carrito
+// 3. Agregar un producto al carrito
 router.post('/:cid/product/:pid', async (req, res) => {
     try {
-        const cid = parseInt(req.params.cid);
-        const pid = parseInt(req.params.pid);
+        const cart = await CartModel.findById(req.params.cid);
+        if (!cart) return res.status(404).send({ status: 'error', error: "Carrito no encontrado" });
 
-        const cart = await manager.addProductToCart(cid, pid);
+        const productIndex = cart.products.findIndex(p => p.product._id.toString() === req.params.pid);
 
-        if (!cart) {
-            return res.status(404).send({ error: "Carrito no encontrado" });
+        if (productIndex !== -1) {
+            cart.products[productIndex].quantity++;
+        } else {
+            cart.products.push({ product: req.params.pid, quantity: 1 });
         }
 
-        res.send({ message: "Producto agregado al carrito", cart: cart });
+        await cart.save();
+        res.send({ status: 'success', payload: cart });
     } catch (error) {
-        res.status(500).send({ error: "Error al agregar producto al carrito" });
+        res.status(500).send({ status: 'error', error: "Error al agregar producto" });
+    }
+});
+
+// 4. ELIMINAR un producto específico
+router.delete('/:cid/products/:pid', async (req, res) => {
+    try {
+        const cart = await CartModel.findById(req.params.cid);
+        if (!cart) return res.status(404).send({ status: 'error', error: "Carrito no encontrado" });
+
+        cart.products = cart.products.filter(p => p.product._id.toString() !== req.params.pid);
+        await cart.save();
+        res.send({ status: 'success', payload: cart });
+    } catch (error) {
+        res.status(500).send({ status: 'error', error: "Error al eliminar producto" });
+    }
+});
+
+// 5. ACTUALIZAR todo el arreglo de productos
+router.put('/:cid', async (req, res) => {
+    try {
+        const cart = await CartModel.findById(req.params.cid);
+        if (!cart) return res.status(404).send({ status: 'error', error: "Carrito no encontrado" });
+
+        cart.products = req.body; 
+        await cart.save();
+        res.send({ status: 'success', payload: cart });
+    } catch (error) {
+        res.status(500).send({ status: 'error', error: "Error al actualizar carrito" });
+    }
+});
+
+// 6. ACTUALIZAR SOLO la cantidad de un producto
+router.put('/:cid/products/:pid', async (req, res) => {
+    try {
+        const cart = await CartModel.findById(req.params.cid);
+        if (!cart) return res.status(404).send({ status: 'error', error: "Carrito no encontrado" });
+
+        const productIndex = cart.products.findIndex(p => p.product._id.toString() === req.params.pid);
+        if (productIndex !== -1) {
+            cart.products[productIndex].quantity = req.body.quantity;
+            await cart.save();
+            res.send({ status: 'success', payload: cart });
+        } else {
+            res.status(404).send({ status: 'error', error: "Producto no encontrado en carrito" });
+        }
+    } catch (error) {
+        res.status(500).send({ status: 'error', error: "Error al actualizar cantidad" });
+    }
+});
+
+// 7. VACIAR el carrito por completo
+router.delete('/:cid', async (req, res) => {
+    try {
+        const cart = await CartModel.findById(req.params.cid);
+        if (!cart) return res.status(404).send({ status: 'error', error: "Carrito no encontrado" });
+
+        cart.products = [];
+        await cart.save();
+        res.send({ status: 'success', message: "Carrito vaciado", payload: cart });
+    } catch (error) {
+        res.status(500).send({ status: 'error', error: "Error al vaciar carrito" });
     }
 });
 

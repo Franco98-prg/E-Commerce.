@@ -1,0 +1,18 @@
+<div class="container mt-5">
+    <div class="card shadow-lg border-0">
+        <div class="card-body p-5">
+            <h1 class="display-4 text-primary">{{product.title}}</h1>
+            <h3 class="text-success mb-4">${{product.price}}</h3>
+            <p class="lead">{{product.description}}</p>
+            <ul class="list-group list-group-flush mb-4">
+                <li class="list-group-item"><strong>Categoría:</strong> {{product.category}}</li>
+                <li class="list-group-item"><strong>Código:</strong> {{product.code}}</li>
+                <li class="list-group-item"><strong>Stock Disponible:</strong> {{product.stock}} unidades</li>
+            </ul>
+            <button class="btn btn-primary btn-lg w-100" onclick="addToCart('{{product._id}}')">Agregar al Carrito</button>
+            <a href="/products" class="btn btn-link w-100 mt-2">Volver al catálogo</a>
+        </div>
+    </div>
+</div>
+
+<script src="/js/cart.js"></script>

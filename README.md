@@ -1,24 +1,28 @@
-# ☕ Hortiocla Lavalle - Backend (Segunda Entrega)
+# ☕ Santino Coffee Shop - Backend System (Entrega Final)
 
-Este proyecto representa la evolución del backend del e-commerce. Hemos integrado **motores de plantillas** para la renderización de vistas dinámicas y **WebSockets** para permitir una comunicación bidireccional y actualizaciones del inventario en tiempo real.
+Este proyecto es la arquitectura backend desarrollada para **Santino**, una cafetería de especialidad ubicada en el Museo de Arte Contemporáneo de Corrientes Capital, Argentina. 
 
-## 🚀 Novedades en esta entrega
+El sistema está diseñado para gestionar de manera eficiente el catálogo de productos y las órdenes de compra, soportando la operativa en tiempo real para un local con capacidad de 70 a 80 personas. Esta versión final migra la persistencia de datos a la nube utilizando **MongoDB Atlas**.
 
-* **Interfaz Gráfica (Handlebars):** Implementación de vistas dinámicas para dejar de consumir la API exclusivamente vía Postman/ThunderClient.
-* **Tiempo Real (Socket.io):** Conexión bidireccional entre el cliente y el servidor. Al agregar o eliminar un producto, la vista se actualiza automáticamente para todos los clientes conectados sin necesidad de recargar la página.
-* **Diseño UI:** Integración de Bootstrap para un panel de gestión limpio, responsive y profesional.
+## 🚀 Características Principales
 
-## 🛠️ Tecnologías Utilizadas
+* **Catálogo Dinámico y Paginado:** Renderizado de productos utilizando Handlebars y Bootstrap, con soporte de paginación asíncrona a través de `mongoose-paginate-v2`.
+* **Gestión de Inventario en Tiempo Real:** Panel de control protegido conectado vía WebSockets (`Socket.io`). Permite agregar o eliminar productos del menú actualizando las pantallas de todos los clientes instantáneamente.
+* **Carrito de Compras Inteligente:** Lógica completa de e-commerce almacenada en MongoDB. Permite agregar productos, modificar cantidades, eliminar ítems individuales o vaciar el carrito por completo.
+* **Persistencia en la Nube:** Integración total con MongoDB Atlas mediante `Mongoose`, utilizando esquemas estrictos de validación, referencias y el método `populate` para relacionar carritos con productos.
 
-* **Node.js & Express:** Entorno de ejecución y framework del servidor.
-* **Express-Handlebars:** Motor de plantillas para generar el HTML dinámico.
-* **Socket.io:** Librería para la comunicación en tiempo real (WebSockets).
-* **FileSystem (fs):** Persistencia de datos en formato JSON.
-* **Bootstrap 5:** Framework CSS para el diseño de la interfaz.
+## 🛠️ Stack Tecnológico
 
-## ⚙️ Instrucciones de Instalación
+* **Entorno:** Node.js
+* **Framework:** Express.js
+* **Base de Datos:** MongoDB Atlas (Mongoose ODM)
+* **Motores de Plantillas:** Express-Handlebars
+* **Tiempo Real:** Socket.io
+* **Frontend UI:** Bootstrap 5 / CSS Vanilla
 
-1. Clonar el repositorio.
+## ⚙️ Instalación y Configuración Local
+
+1. Clonar este repositorio en tu máquina local.
 2. Instalar las dependencias del proyecto:
    ```bash
    npm install

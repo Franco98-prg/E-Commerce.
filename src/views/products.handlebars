@@ -1,0 +1,34 @@
+<div class="container mt-4">
+    <h1 class="text-center mb-4">Menú de Especialidad</h1>
+    
+    <div class="row">
+        {{#each products}}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm border-0">
+                <div class="card-body text-center">
+                    <h5 class="card-title text-primary">{{this.title}}</h5>
+                    <p class="card-text text-muted">{{this.category}}</p>
+                    <h4 class="text-success">${{this.price}}</h4>
+                    <hr>
+                    <a href="/products/{{this._id}}" class="btn btn-outline-secondary w-100 mb-2">Ver Detalles</a>
+                    <button class="btn btn-primary w-100" onclick="addToCart('{{this._id}}')">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+
+    <div class="d-flex justify-content-center mt-4">
+        {{#if hasPrevPage}}
+            <a href="/products?page={{prevPage}}" class="btn btn-dark mx-2">Anterior</a>
+        {{/if}}
+        
+        <span class="btn btn-light mx-2 disabled">Página {{page}}</span>
+        
+        {{#if hasNextPage}}
+            <a href="/products?page={{nextPage}}" class="btn btn-dark mx-2">Siguiente</a>
+        {{/if}}
+    </div>
+</div>
+
+<script src="/js/cart.js"></script>
